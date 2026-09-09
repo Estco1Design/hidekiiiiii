@@ -1,17 +1,20 @@
 {
-  "name": "workspace",
+  "name": "hideki",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "HIDEKI - Independent Creative Platform",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["fashion", "photography", "art", "creative"],
+  "author": "HIDEKI Studio",
+  "license": "MIT",
   "dependencies": {
     "@types/node": "^26.5.0",
     "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.5.5",
     "clsx": "^2.1.1",
     "framer-motion": "^13.2.0",
