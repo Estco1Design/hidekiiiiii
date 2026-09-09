@@ -4,6 +4,8 @@ import { SmoothScroll } from '@/components/SmoothScroll'
 import { CustomCursor } from '@/components/CustomCursor'
 import { Navigation } from '@/components/Navigation'
 import { Loader } from '@/components/Loader'
+import { SoundControl } from '@/components/SoundControl'
+import { CommandPaletteProvider } from '@/components/CommandPaletteProvider'
 
 export const metadata: Metadata = {
   title: 'HIDEKI | Creative Studio',
@@ -38,11 +40,14 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <Loader />
-        <SmoothScroll>
-          <CustomCursor enabled={true} />
-          <Navigation />
-          <main>{children}</main>
-        </SmoothScroll>
+        <CommandPaletteProvider>
+          <SmoothScroll>
+            <CustomCursor enabled={true} />
+            <Navigation theme="dark" />
+            <main>{children}</main>
+            <SoundControl />
+          </SmoothScroll>
+        </CommandPaletteProvider>
       </body>
     </html>
   )

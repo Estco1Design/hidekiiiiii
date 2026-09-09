@@ -7,16 +7,23 @@ export interface Project {
   coverType: 'image' | 'video'
   coverImage?: string
   coverVideo?: string
+  previewVideo?: string
+  theme: 'dark' | 'light'
+  accentColor?: string
   gallery: {
     type: 'image' | 'video'
     src: string
     caption?: string
+    size?: 'small' | 'medium' | 'large' | 'huge' | 'fullscreen'
+    align?: 'left' | 'center' | 'right'
   }[]
   credits: {
     role: string
     name: string
   }[]
   description?: string
+  client?: string
+  location?: string
 }
 
 export interface Product {
@@ -44,4 +51,18 @@ export interface Service {
   title: string
   description: string
   startingPrice?: number
+}
+
+export interface InquiryData {
+  projectType: string
+  services: string[]
+  budget: string
+  date: string
+  idea: string
+  contact: {
+    name: string
+    telegram?: string
+    email?: string
+    phone?: string
+  }
 }
