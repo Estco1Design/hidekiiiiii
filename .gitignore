@@ -1,0 +1,75 @@
+```
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist/
+build/
+.next/
+out/
+
+# Environment variables
+.env
+.env.local
+.env.*
+
+# IDE files
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+
+# Node.js
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Compiled CSS/JS
+*.min.js
+*.min.css
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Browserslist
+node_modules/browserslist/
+
+# Sharp (image processing)
+node_modules/sharp/build/
+
+# TypeScript
+*.tsbuildinfo
+
+# Next.js
+.next/cache/
+.next/static/
+.next/server/
+.next/standalone/
+.next/trace/
+
+# Bundler cache (when using `npm ci`)
+node_modules/.cache/
+
+```
