@@ -26,6 +26,13 @@ export function Reveal({
     const element = ref.current
     if (!element) return
 
+    // Kill any existing ScrollTrigger on this element
+    ScrollTrigger.getAll().forEach(trigger => {
+      if (trigger.trigger === element) {
+        trigger.kill()
+      }
+    })
+
     const getTransformValue = () => {
       switch (direction) {
         case 'up':
@@ -43,13 +50,15 @@ export function Reveal({
       }
     }
 
-    const animation = gsap.fromTo(
-      element,
-      {
-        opacity: 0,
-        transform: getTransformValue(),
-      },
-      {
+    // Reset the element state before animating
+    gsap.set(element, { 
+      opacity: 0, 
+      transform: getTransformValue(),
+      clearProps: "transform"
+    })
+
+    const ctx = gsap.context(() => {
+      gsap.to(element, {
         opacity: 1,
         transform: 'none',
         duration: 1.2,
@@ -60,11 +69,11 @@ export function Reveal({
           start: 'top 85%',
           toggleActions: 'play none none none',
         },
-      }
-    )
+      })
+    }, element)
 
     return () => {
-      animation.kill()
+      ctx.revert()
     }
   }, [delay, direction])
 
