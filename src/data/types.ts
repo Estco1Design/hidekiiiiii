@@ -36,6 +36,7 @@ export interface Product {
   description: string
   isLimited?: boolean
   numberOfObjects?: number
+  year?: number
 }
 
 export interface Service {

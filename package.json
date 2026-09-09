@@ -8,7 +8,12 @@
     "start": "next start",
     "lint": "next lint"
   },
-  "keywords": ["fashion", "photography", "art", "creative"],
+  "keywords": [
+    "fashion",
+    "photography",
+    "art",
+    "creative"
+  ],
   "author": "HIDEKI Studio",
   "license": "MIT",
   "dependencies": {
@@ -26,5 +31,8 @@
     "react-dom": "^19.3.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3"
   }
 }
