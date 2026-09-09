@@ -1,11 +1,17 @@
-```
 # Dependencies
 node_modules/
+
+# Next.js generated files
+.next/
+out/
 
 # Build outputs
 dist/
 build/
 target/
+
+# TypeScript cache
+*.tsbuildinfo
 
 # Logs
 *.log
@@ -33,6 +39,9 @@ coverage/
 htmlcov/
 .coverage
 
+# OS files
+.DS_Store
+
 # Compressed files
 *.zip
 *.gz
@@ -56,4 +65,3 @@ htmlcov/
 *.tar.bz2
 *.tar.xz
 *.tar.zst
-```
