@@ -1,16 +1,26 @@
+```
+# TypeScript/Next.js
+.next/
+out/
+.next/cache/
+
 # Dependencies
 node_modules/
-
-# Build outputs
-.next/
-dist/
-build/
-out/
 
 # Environment variables
 .env
 .env.local
 .env.*
+!.env.example
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
 
 # IDE specific
 .vscode/
@@ -18,56 +28,31 @@ out/
 *.swp
 *.swo
 
-# Logs
-*.log
+# Build outputs
+dist/
+build/
+target/
+public/dist/
+static/css/
+static/js/
 
-# Temporary files
-*.tmp
-
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-env/
-venv/
-.venv/
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Coverage
-.coverage
+# Coverage reports
 coverage/
-htmlcov/
+.nyc_output/
+*.lcov
 
 # Testing
-.nyc_output/
-coverage-final.json
-.pytest_cache/
-.mypy_cache/
+.jest/
+jest/
+mocha.opts
+*.snap
 
-# OS generated
+# OS generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
-
-# Compressed
-*.zip
-*.tar.gz
-*.tar.bz2
-*.tar.xz
-*.gz
-*.rar
-*.7z
-*.bz2
-*.xz
-*.zst
-*.lz4
-*.lzh
-*.cab
-*.arj
-*.rpm
-*.deb
-*.Z
-*.lz
-*.lzo
+```
