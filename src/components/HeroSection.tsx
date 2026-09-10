@@ -9,8 +9,8 @@ interface HeroSectionProps {
 }
 
 export function HeroSection({
-  video = '/media/hero/main.mp4',
-  image = '/media/hero/main.jpg',
+  video = '/media/home/hero-video.mp4',
+  image = '/media/home/hero-poster.jpg',
   title = 'HIDEKI',
   subtitle = 'CREATIVE STUDIO / MOSCOW / WORLDWIDE',
 }: HeroSectionProps) {
