@@ -7,13 +7,19 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null)
 
   useEffect(() => {
+    // Only initialize on client side and for non-touch devices
+    if (typeof window === 'undefined') return
+
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+    
+    // For touch devices, use native scrolling with lighter configuration
     lenisRef.current = new Lenis({
-      duration: 1.2,
+      duration: isTouchDevice ? 0.6 : 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      lerp: 0.1,
+      lerp: isTouchDevice ? 0.05 : 0.1,
       orientation: 'vertical',
       gestureOrientation: 'vertical',
-      touchMultiplier: 2,
+      touchMultiplier: isTouchDevice ? 1 : 2,
       wheelMultiplier: 1,
       infinite: false,
     })

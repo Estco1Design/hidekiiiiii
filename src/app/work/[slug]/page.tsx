@@ -126,7 +126,7 @@ export default function ProjectPage() {
             <div
               key={index}
               className="gallery-item"
-              style={{ opacity: 0 }}
+              data-aos="fade-up"
             >
               {item.type === 'video' ? (
                 <div className="w-full aspect-video bg-bg-tertiary overflow-hidden">

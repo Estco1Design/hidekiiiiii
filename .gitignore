@@ -1,77 +1,59 @@
+```
+# Next.js build output
+.next/
+
+# Environment variables
+.env
+.env.local
+.env.*
+
 # Dependencies
 node_modules/
+
+# Logs
+*.log
+
+# Editor directories
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.swp
 
 # Build artifacts
 dist/
 build/
 target/
 
-# Python
+# Python cache
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.Python
-env/
-venv/
-.venv/
-.ENV
-.python-version
-pip-log.txt
-pip-delete-this-directory.txt
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.log
-*.pot
-*.po
-*~
-.pytest_cache/
-.mypy_cache/
-.hypothesis/
 
-# Compiled and binary files
-*.class
+# Compiled binary files
 *.o
-*.so
-*.dylib
-*.dll
+*.obj
 *.exe
-*.out
+*.dll
+*.so
 *.a
-*.lib
+*.out
 
-# Environment specific
-.env
-.env.local
-*.env
-.env.*
-
-# Editors
-.vscode/
-.idea/
-*.swp
-*.swo
-*.tmp
-
-# System
-.DS_Store
-Thumbs.db
-.directory
-Desktop.ini
-ehthumbs.db
-
-# Logs
-*.log
-
-# Coverage
+# Coverage reports
 coverage/
 htmlcov/
 .coverage
+
+# MyPy cache
+.mypy_cache/
+
+# Pytest cache
+.pytest_cache/
+
+# Gradle
+.gradle/
 
 # Compressed files
 *.zip
@@ -96,3 +78,8 @@ htmlcov/
 *.tar.bz2
 *.tar.xz
 *.tar.zst
+
+# System files
+.DS_Store
+Thumbs.db
+```

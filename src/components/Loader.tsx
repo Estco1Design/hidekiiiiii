@@ -8,15 +8,18 @@ export function Loader() {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
-    // Simulate loading progress
+    // Simulate loading progress - faster on mobile
+    const isTouchDevice = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)
+    const speedMultiplier = isTouchDevice ? 2 : 1
+    
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval)
-          setTimeout(() => setIsLoading(false), 500)
+          setTimeout(() => setIsLoading(false), isTouchDevice ? 200 : 500)
           return 100
         }
-        return prev + Math.random() * 15
+        return prev + Math.random() * 15 * speedMultiplier
       })
     }, 100)
 
