@@ -1,10 +1,14 @@
+'use client'
+
 import { Reveal } from './Reveal'
+import { useI18n } from '@/i18n/I18nProvider'
 
 interface FooterProps {
   showShopPreview?: boolean
 }
 
 export function Footer({ showShopPreview = true }: FooterProps) {
+  const { t } = useI18n()
   const currentYear = new Date().getFullYear()
 
   return (
@@ -19,10 +23,10 @@ export function Footer({ showShopPreview = true }: FooterProps) {
           >
             <div className="flex items-center justify-between mb-4">
               <span className="text-mono text-text-primary/60 uppercase tracking-[0.15em]">
-                HIDEKI OBJECT 001
+                {t('footer.shopPreviewTitle')}
               </span>
               <span className="text-mono text-text-secondary group-hover:opacity-60 transition-opacity flex items-center gap-2">
-                ENTER SHOP
+                {t('footer.enterShop')}
                 <svg
                   width="16"
                   height="16"
@@ -39,7 +43,7 @@ export function Footer({ showShopPreview = true }: FooterProps) {
             <div className="aspect-[21/9] overflow-hidden bg-bg-tertiary">
               <img
                 src="/media/shop/object-001/front.jpg"
-                alt="HIDEKI Object 001"
+                alt={t('footer.shopPreviewTitle')}
                 className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500"
               />
             </div>
@@ -58,7 +62,7 @@ export function Footer({ showShopPreview = true }: FooterProps) {
           </Reveal>
           <Reveal direction="up" delay={0.2}>
             <p className="text-mono text-text-primary/50 uppercase tracking-[0.15em]">
-              MOSCOW / WORLDWIDE
+              {t('footer.location')}
             </p>
           </Reveal>
         </div>
@@ -71,7 +75,7 @@ export function Footer({ showShopPreview = true }: FooterProps) {
               className="text-mono text-text-primary/60 hover:text-text-secondary transition-colors uppercase tracking-[0.1em]"
               data-hover="true"
             >
-              WORK
+              {t('nav.work')}
             </a>
           </Reveal>
           <Reveal direction="up" delay={0.35}>
@@ -80,7 +84,7 @@ export function Footer({ showShopPreview = true }: FooterProps) {
               className="text-mono text-text-primary/60 hover:text-text-secondary transition-colors uppercase tracking-[0.1em]"
               data-hover="true"
             >
-              STUDIO
+              {t('nav.studio')}
             </a>
           </Reveal>
           <Reveal direction="up" delay={0.4}>
@@ -89,7 +93,7 @@ export function Footer({ showShopPreview = true }: FooterProps) {
               className="text-mono text-text-primary/60 hover:text-text-secondary transition-colors uppercase tracking-[0.1em]"
               data-hover="true"
             >
-              SHOP
+              {t('nav.shop')}
             </a>
           </Reveal>
         </div>
@@ -104,7 +108,7 @@ export function Footer({ showShopPreview = true }: FooterProps) {
               className="text-mono text-text-primary/60 hover:text-text-secondary transition-colors uppercase tracking-[0.1em]"
               data-hover="true"
             >
-              INSTAGRAM
+              {t('footer.instagram')}
             </a>
           </Reveal>
           <Reveal direction="up" delay={0.5}>
@@ -115,7 +119,7 @@ export function Footer({ showShopPreview = true }: FooterProps) {
               className="text-mono text-text-primary/60 hover:text-text-secondary transition-colors uppercase tracking-[0.1em]"
               data-hover="true"
             >
-              TELEGRAM
+              {t('footer.telegram')}
             </a>
           </Reveal>
           <Reveal direction="up" delay={0.55}>
@@ -124,7 +128,7 @@ export function Footer({ showShopPreview = true }: FooterProps) {
               className="text-mono text-text-primary/60 hover:text-text-secondary transition-colors uppercase tracking-[0.1em]"
               data-hover="true"
             >
-              EMAIL
+              {t('footer.email')}
             </a>
           </Reveal>
         </div>
@@ -135,10 +139,10 @@ export function Footer({ showShopPreview = true }: FooterProps) {
         <Reveal direction="up" delay={0.6}>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <p className="text-mono text-text-primary/40 text-xs">
-              © HIDEKI {currentYear}
+              {t('footer.copyright')} {currentYear}
             </p>
             <p className="text-mono text-text-primary/30 text-xs">
-              ALL RIGHTS RESERVED
+              {t('footer.allRightsReserved')}
             </p>
           </div>
         </Reveal>
