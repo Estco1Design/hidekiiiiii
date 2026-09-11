@@ -2,16 +2,18 @@
 
 import { useEffect, useRef } from 'react'
 import Lenis from 'lenis'
+import { usePathname } from 'next/navigation'
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null)
+  const pathname = usePathname()
 
   useEffect(() => {
     // Only initialize on client side and for non-touch devices
     if (typeof window === 'undefined') return
 
     const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
-    
+
     // For touch devices, use native scrolling with lighter configuration
     lenisRef.current = new Lenis({
       duration: isTouchDevice ? 0.6 : 1.2,
@@ -37,6 +39,13 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       lenis.destroy()
     }
   }, [])
+
+  // Reset scroll position on route change
+  useEffect(() => {
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true })
+    }
+  }, [pathname])
 
   return <>{children}</>
 }
