@@ -6,13 +6,19 @@ import { usePathname } from 'next/navigation'
 import { clsx } from 'clsx'
 import gsap from 'gsap'
 import { Reveal } from './Reveal'
+import { useI18n } from '@/i18n/I18nProvider'
 
-const navItems = [
-  { label: { en: 'WORK', ru: 'РАБОТЫ' }, href: '/work' },
-  { label: { en: 'STUDIO', ru: 'СТУДИЯ' }, href: '/studio' },
-  { label: { en: 'ABOUT', ru: 'О НАС' }, href: '/about' },
-  { label: { en: 'SHOP', ru: 'МАГАЗИН' }, href: '/shop' },
-  { label: { en: 'CONTACT', ru: 'КОНТАКТЫ' }, href: '/contact' },
+interface NavItem {
+  labelKey: string
+  href: string
+}
+
+const navItems: NavItem[] = [
+  { labelKey: 'nav.work', href: '/work' },
+  { labelKey: 'nav.studio', href: '/studio' },
+  { labelKey: 'nav.about', href: '/about' },
+  { labelKey: 'nav.shop', href: '/shop' },
+  { labelKey: 'nav.contact', href: '/contact' },
 ]
 
 interface NavigationProps {
@@ -22,10 +28,10 @@ interface NavigationProps {
 
 export function Navigation({ theme = 'dark', hidden = false }: NavigationProps) {
   const pathname = usePathname()
+  const { language, setLanguage, t } = useI18n()
   const navRef = useRef<HTMLDivElement>(null)
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [currentLang, setCurrentLang] = useState<'en' | 'ru'>('en')
   const [isTouch, setIsTouch] = useState(false)
   const isDark = theme === 'dark'
 
@@ -64,7 +70,7 @@ export function Navigation({ theme = 'dark', hidden = false }: NavigationProps) 
   }
 
   const toggleLanguage = () => {
-    setCurrentLang(currentLang === 'en' ? 'ru' : 'en')
+    setLanguage(language === 'en' ? 'ru' : 'en')
   }
 
   return (
@@ -101,7 +107,7 @@ export function Navigation({ theme = 'dark', hidden = false }: NavigationProps) 
                 )}
                 data-hover="true"
               >
-                {item.label[currentLang]}
+                {t(item.labelKey)}
                 <span
                   className={clsx(
                     'absolute -bottom-1 left-0 h-[1px] transition-all duration-300',
@@ -120,7 +126,7 @@ export function Navigation({ theme = 'dark', hidden = false }: NavigationProps) 
               )}
               data-hover="true"
             >
-              {currentLang.toUpperCase()}
+              {language.toUpperCase()}
             </button>
           </div>
 
@@ -132,7 +138,7 @@ export function Navigation({ theme = 'dark', hidden = false }: NavigationProps) 
               className={clsx('text-xs-custom', textColor)}
               data-hover="true"
             >
-              {currentLang.toUpperCase()}
+              {language.toUpperCase()}
             </button>
             <button
               className={clsx('z-50', textColor)}
@@ -183,7 +189,7 @@ export function Navigation({ theme = 'dark', hidden = false }: NavigationProps) 
                   onClick={toggleMobileMenu}
                   data-hover="true"
                 >
-                  {item.label[currentLang]}
+                  {t(item.labelKey)}
                 </Link>
               </Reveal>
             ))}
