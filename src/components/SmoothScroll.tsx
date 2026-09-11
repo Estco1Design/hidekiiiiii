@@ -6,9 +6,21 @@ import { usePathname } from 'next/navigation'
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null)
+  const rafIdRef = useRef<number | null>(null)
   const pathname = usePathname()
 
+  // Destroy and recreate Lenis instance on route change
   useEffect(() => {
+    // Cleanup previous instance
+    if (lenisRef.current) {
+      lenisRef.current.destroy()
+      lenisRef.current = null
+    }
+    if (rafIdRef.current) {
+      cancelAnimationFrame(rafIdRef.current)
+      rafIdRef.current = null
+    }
+    
     // Only initialize on client side and for non-touch devices
     if (typeof window === 'undefined') return
 
@@ -30,20 +42,20 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
 
     function raf(time: number) {
       lenis.raf(time)
-      requestAnimationFrame(raf)
+      rafIdRef.current = requestAnimationFrame(raf)
     }
-
-    requestAnimationFrame(raf)
+    
+    rafIdRef.current = requestAnimationFrame(raf)
 
     return () => {
-      lenis.destroy()
-    }
-  }, [])
-
-  // Reset scroll position on route change
-  useEffect(() => {
-    if (lenisRef.current) {
-      lenisRef.current.scrollTo(0, { immediate: true })
+      if (rafIdRef.current) {
+        cancelAnimationFrame(rafIdRef.current)
+        rafIdRef.current = null
+      }
+      if (lenisRef.current) {
+        lenisRef.current.destroy()
+        lenisRef.current = null
+      }
     }
   }, [pathname])
 
