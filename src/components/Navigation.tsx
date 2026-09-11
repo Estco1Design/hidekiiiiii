@@ -1,17 +1,18 @@
 'use client'
 
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { clsx } from 'clsx'
 import gsap from 'gsap'
-import { useEffect, useRef, useState } from 'react'
+import { Reveal } from './Reveal'
 
 const navItems = [
-  { label: 'WORK', href: '/work' },
-  { label: 'STUDIO', href: '/studio' },
-  { label: 'ABOUT', href: '/about' },
-  { label: 'SHOP', href: '/shop' },
-  { label: 'CONTACT', href: '/contact' },
+  { label: { en: 'WORK', ru: 'РАБОТЫ' }, href: '/work' },
+  { label: { en: 'STUDIO', ru: 'СТУДИЯ' }, href: '/studio' },
+  { label: { en: 'ABOUT', ru: 'О НАС' }, href: '/about' },
+  { label: { en: 'SHOP', ru: 'МАГАЗИН' }, href: '/shop' },
+  { label: { en: 'CONTACT', ru: 'КОНТАКТЫ' }, href: '/contact' },
 ]
 
 interface NavigationProps {
@@ -23,7 +24,15 @@ export function Navigation({ theme = 'dark', hidden = false }: NavigationProps) 
   const pathname = usePathname()
   const navRef = useRef<HTMLDivElement>(null)
   const [scrolled, setScrolled] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [currentLang, setCurrentLang] = useState<'en' | 'ru'>('en')
+  const [isTouch, setIsTouch] = useState(false)
   const isDark = theme === 'dark'
+
+  useEffect(() => {
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+    setIsTouch(isTouchDevice)
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,81 +43,153 @@ export function Navigation({ theme = 'dark', hidden = false }: NavigationProps) 
   }, [])
 
   useEffect(() => {
-    if (navRef.current) {
+    if (navRef.current && !mobileMenuOpen) {
       gsap.fromTo(
         navRef.current.children,
         { opacity: 0, y: -20 },
         { opacity: 1, y: 0, duration: 0.6, stagger: 0.08, ease: 'power2.out' }
       )
     }
-  }, [])
+  }, [mobileMenuOpen])
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false)
+  }, [pathname])
 
   const textColor = isDark ? 'text-text-secondary' : 'text-text-primary'
 
-  return (
-    <nav
-      ref={navRef}
-      className={clsx(
-        'fixed top-0 left-0 right-0 z-50 px-6 md:px-12 py-6 md:py-8 transition-all duration-500',
-        scrolled && 'bg-bg-primary/80 backdrop-blur-sm',
-        hidden && 'opacity-0 pointer-events-none'
-      )}
-    >
-      <div className="flex justify-between items-start">
-        <Link
-          href="/"
-          className={clsx(
-            'text-sm tracking-[0.2em] uppercase transition-opacity z-50',
-            textColor
-          )}
-          data-hover="true"
-        >
-          HIDEKI
-        </Link>
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen)
+  }
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-8">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
+  const toggleLanguage = () => {
+    setCurrentLang(currentLang === 'en' ? 'ru' : 'en')
+  }
+
+  return (
+    <>
+      <nav
+        ref={navRef}
+        className={clsx(
+          'fixed top-0 left-0 right-0 z-50 px-6 md:px-12 py-6 md:py-8 transition-all duration-500',
+          scrolled && 'bg-bg-primary/80 backdrop-blur-sm',
+          hidden && 'opacity-0 pointer-events-none'
+        )}
+      >
+        <div className="flex justify-between items-start">
+          <Link
+            href="/"
+            className={clsx(
+              'text-sm tracking-[0.2em] uppercase transition-opacity z-50',
+              textColor
+            )}
+            data-hover="true"
+          >
+            HIDEKI
+          </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-8">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={clsx(
+                  'text-xs-custom transition-colors relative group',
+                  pathname === item.href ? textColor : `${textColor}/80`
+                )}
+                data-hover="true"
+              >
+                {item.label[currentLang]}
+                <span
+                  className={clsx(
+                    'absolute -bottom-1 left-0 h-[1px] transition-all duration-300',
+                    isDark ? 'bg-white' : 'bg-text-primary',
+                    pathname === item.href ? 'w-full' : 'w-0 group-hover:w-full'
+                  )}
+                />
+              </Link>
+            ))}
+            {/* Language Switcher */}
+            <button
+              onClick={toggleLanguage}
               className={clsx(
-                'text-xs-custom transition-colors relative group',
-                pathname === item.href ? textColor : `${textColor}/80`
+                'text-xs-custom transition-colors',
+                textColor
               )}
               data-hover="true"
             >
-              {item.label}
-              <span
-                className={clsx(
-                  'absolute -bottom-1 left-0 h-[1px] transition-all duration-300',
-                  isDark ? 'bg-white' : 'bg-text-primary',
-                  pathname === item.href ? 'w-full' : 'w-0 group-hover:w-full'
-                )}
-              />
-            </Link>
-          ))}
-        </div>
+              {currentLang.toUpperCase()}
+            </button>
+          </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          className={clsx('md:hidden z-50', textColor)}
-          data-hover="true"
-          aria-label="Menu"
+          {/* Mobile Menu Button */}
+          <div className="md:hidden flex items-center gap-4">
+            {/* Language Switcher for Mobile */}
+            <button
+              onClick={toggleLanguage}
+              className={clsx('text-xs-custom', textColor)}
+              data-hover="true"
+            >
+              {currentLang.toUpperCase()}
+            </button>
+            <button
+              className={clsx('z-50', textColor)}
+              onClick={toggleMobileMenu}
+              aria-label="Menu"
+              data-hover="true"
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1"
+              >
+                {mobileMenuOpen ? (
+                  <>
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </>
+                ) : (
+                  <>
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <line x1="3" y1="18" x2="21" y2="18" />
+                  </>
+                )}
+              </svg>
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div 
+          className="fixed inset-0 z-40 bg-bg-primary md:hidden"
+          onClick={toggleMobileMenu}
         >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1"
-          >
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="3" y1="18" x2="21" y2="18" />
-          </svg>
-        </button>
-      </div>
-    </nav>
+          <div className="flex flex-col items-center justify-center h-full gap-8 px-6">
+            {navItems.map((item, index) => (
+              <Reveal key={item.href} direction="up" delay={index * 0.1}>
+                <Link
+                  href={item.href}
+                  className={clsx(
+                    'text-2xl tracking-[0.2em] uppercase transition-colors',
+                    pathname === item.href ? textColor : `${textColor}/60`
+                  )}
+                  onClick={toggleMobileMenu}
+                  data-hover="true"
+                >
+                  {item.label[currentLang]}
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
   )
 }
