@@ -5,14 +5,31 @@ import Link from 'next/link'
 import { Reveal } from '@/components/Reveal'
 import { Footer } from '@/components/Footer'
 import { projects, getAllCategories, getProjectsByCategory } from '@/data/projects'
+import { useI18n } from '@/i18n/I18nProvider'
 
 type ViewMode = 'INDEX' | 'VISUAL'
 
 export default function WorkPage() {
+  const { t } = useI18n()
   const [viewMode, setViewMode] = useState<ViewMode>('INDEX')
   const [activeCategory, setActiveCategory] = useState('ALL')
   const categories = getAllCategories()
   const filteredProjects = getProjectsByCategory(activeCategory)
+
+  const getCategoryLabel = (category: string) => {
+    const categoryMap: Record<string, string> = {
+      'ALL': t('work.all'),
+      'FASHION': t('work.fashion'),
+      'PORTRAIT': t('work.portrait'),
+      'CAMPAIGN': t('work.campaign'),
+      'COMMERCIAL': t('work.commercial'),
+      'FILM': t('work.film'),
+      'ART': t('work.art'),
+      'AI': t('work.ai'),
+      'PRODUCT': t('work.product'),
+    }
+    return categoryMap[category] || category
+  }
 
   return (
     <div className="relative min-h-screen pt-32 pb-20 px-6 md:px-12">
@@ -20,7 +37,7 @@ export default function WorkPage() {
       <div className="mb-16">
         <Reveal direction="up">
           <h1 className="text-editorial text-text-secondary font-light tracking-tighter mb-8">
-            WORK
+            {t('work.title')}
           </h1>
         </Reveal>
 
@@ -37,7 +54,7 @@ export default function WorkPage() {
                 }`}
                 data-hover="true"
               >
-                INDEX
+                {t('work.indexView')}
               </button>
               <span className="text-text-primary/30">/</span>
               <button
@@ -49,7 +66,7 @@ export default function WorkPage() {
                 }`}
                 data-hover="true"
               >
-                VISUAL
+                {t('work.visualView')}
               </button>
             </div>
 
@@ -66,7 +83,7 @@ export default function WorkPage() {
                   }`}
                   data-hover="true"
                 >
-                  {category}
+                  {getCategoryLabel(category)}
                 </button>
               ))}
             </div>
@@ -95,7 +112,7 @@ export default function WorkPage() {
                   </div>
                   <div className="flex items-center gap-8 text-mono text-text-primary/50">
                     <span>{project.year}</span>
-                    <span>{project.category}</span>
+                    <span>{getCategoryLabel(project.category)}</span>
                     <svg
                       width="20"
                       height="20"
@@ -150,7 +167,7 @@ export default function WorkPage() {
                   </span>
                 </div>
                 <p className="text-mono text-text-primary/50 text-xs-custom mt-1">
-                  {project.category}
+                  {getCategoryLabel(project.category)}
                 </p>
               </Link>
             </Reveal>

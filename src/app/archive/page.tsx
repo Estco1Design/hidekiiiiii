@@ -3,8 +3,10 @@
 import { Reveal } from '@/components/Reveal'
 import { Footer } from '@/components/Footer'
 import { getArchiveProducts } from '@/data/products'
+import { useI18n } from '@/i18n/I18nProvider'
 
 export default function ArchivePage() {
+  const { t } = useI18n()
   const archiveProducts = getArchiveProducts()
 
   return (
@@ -13,14 +15,13 @@ export default function ArchivePage() {
       <section className="mb-16 md:mb-24">
         <Reveal direction="up">
           <h1 className="text-editorial text-text-secondary font-light tracking-tighter mb-8">
-            ARCHIVE
+            {t('archive.title')}
           </h1>
         </Reveal>
 
         <Reveal direction="up" delay={0.2}>
-          <p className="text-mono text-text-primary/60 uppercase tracking-[0.15em] max-w-2xl">
-            Past objects that are no longer available for purchase.
-            Each piece remains part of the HIDEKI universe.
+          <p className="text-mono text-text-primary/60 uppercase tracking-[0.15em] max-w-2xl whitespace-pre-line">
+            {t('archive.subtitle')}
           </p>
         </Reveal>
       </section>
@@ -61,9 +62,9 @@ export default function ArchivePage() {
                     {product.description}
                   </p>
                   <div className="flex items-center gap-4 text-mono text-text-primary/40 text-xs-custom">
-                    <span>LIMITED TO {product.numberOfObjects} OBJECTS</span>
+                    <span>{t('archive.limitedTo')} {product.numberOfObjects} {t('archive.objects')}</span>
                     <span>/</span>
-                    <span>ARCHIVE</span>
+                    <span>{t('shop.archiveLabel')}</span>
                   </div>
                 </div>
               </div>
@@ -80,7 +81,7 @@ export default function ArchivePage() {
         <Reveal direction="up">
           <div className="py-32 text-center">
             <p className="text-mono text-text-primary/40 uppercase tracking-[0.15em]">
-              No archived objects yet
+              {t('archive.noObjects')}
             </p>
           </div>
         </Reveal>

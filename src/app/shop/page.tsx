@@ -5,8 +5,10 @@ import Link from 'next/link'
 import { Reveal } from '@/components/Reveal'
 import { Footer } from '@/components/Footer'
 import { getAvailableProducts, getArchiveProducts } from '@/data/products'
+import { useI18n } from '@/i18n/I18nProvider'
 
 export default function ShopPage() {
+  const { t } = useI18n()
   const [activeTab, setActiveTab] = useState<'drop' | 'archive'>('drop')
   const availableProducts = getAvailableProducts()
   const archiveProducts = getArchiveProducts()
@@ -17,7 +19,7 @@ export default function ShopPage() {
       <section className="mb-16 md:mb-24">
         <Reveal direction="up">
           <h1 className="text-editorial text-text-secondary font-light tracking-tighter mb-8">
-            SHOP
+            {t('shop.title')}
           </h1>
         </Reveal>
 
@@ -32,7 +34,7 @@ export default function ShopPage() {
               }`}
               data-hover="true"
             >
-              DROP 001
+              {t('shop.drop')}
             </button>
             <span className="text-text-primary/30">/</span>
             <button
@@ -44,7 +46,7 @@ export default function ShopPage() {
               }`}
               data-hover="true"
             >
-              ARCHIVE
+              {t('shop.archive')}
             </button>
           </div>
         </Reveal>
@@ -81,7 +83,7 @@ export default function ShopPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-mono text-text-primary/40 text-xs-custom mb-1">
-                      OBJECT {product.objectNumber}
+                      {t('shop.objectPrefix')} {product.objectNumber}
                     </p>
                     <h3 className="text-lg text-text-secondary font-light tracking-tight">
                       {product.title}
@@ -93,7 +95,7 @@ export default function ShopPage() {
                     </p>
                     {product.status === 'pre-order' && (
                       <p className="text-mono text-text-primary/40 text-xs-custom">
-                        PRE-ORDER
+                        {t('shop.preOrder')}
                       </p>
                     )}
                   </div>
@@ -121,7 +123,7 @@ export default function ShopPage() {
                     </h3>
                   </div>
                   <div className="flex items-center gap-8 text-mono text-text-primary/40">
-                    <span>ARCHIVE</span>
+                    <span>{t('shop.archiveLabel')}</span>
                     <svg
                       width="20"
                       height="20"

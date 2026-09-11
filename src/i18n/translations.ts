@@ -51,9 +51,10 @@ export const translations = {
     // About Page
     about: {
       title: 'ABOUT',
-      intro: 'HIDEKI is an independent creative platform formed at the intersection of fashion, photography, film and contemporary art.',
+      description: 'HIDEKI is an independent creative platform formed at the intersection of fashion, photography, film and contemporary art.',
       founders: 'Created by two artists working across different mediums.',
       fashionDirection: 'FASHION DIRECTION',
+      fashionDirector: 'Fashion Director',
       fashionDesigner: 'Fashion designer',
       graphicDesigner: 'Graphic designer',
       clothingDevelopment: 'Clothing development',
@@ -62,6 +63,7 @@ export const translations = {
       inHouseProduction: 'In-house production',
       avantGarde: 'Avant-garde & dark aesthetics',
       visualDirection: 'VISUAL DIRECTION',
+      visualDirector: 'Visual Director',
       fashionPhotographer: 'Fashion photographer',
       directorOfPhotography: 'Director of photography',
       lightingGaffer: 'Lighting & gaffer',
@@ -207,9 +209,10 @@ export const translations = {
     // About Page
     about: {
       title: 'О НАС',
-      intro: 'HIDEKI — независимая креативная платформа, созданная на пересечении моды, фотографии, кино и современного искусства.',
+      description: 'HIDEKI — независимая креативная платформа, созданная на пересечении моды, фотографии, кино и современного искусства.',
       founders: 'Создано двумя художниками, работающими в разных медиа.',
       fashionDirection: 'ФЕШН-НАПРАВЛЕНИЕ',
+      fashionDirector: 'Фешн-директор',
       fashionDesigner: 'Дизайнер одежды',
       graphicDesigner: 'Графический дизайнер',
       clothingDevelopment: 'Разработка одежды',
@@ -218,6 +221,7 @@ export const translations = {
       inHouseProduction: 'Собственное производство',
       avantGarde: 'Авангард и тёмная эстетика',
       visualDirection: 'ВИЗУАЛЬНОЕ НАПРАВЛЕНИЕ',
+      visualDirector: 'Визуальный директор',
       fashionPhotographer: 'Фэшн-фотограф',
       directorOfPhotography: 'Оператор-постановщик',
       lightingGaffer: 'Свет и гафер',
