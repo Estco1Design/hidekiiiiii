@@ -16,9 +16,10 @@ export function CustomCursor({ enabled = true }: CursorProps) {
   const [isVisible, setIsVisible] = useState(false)
   const [hoverLabel, setHoverLabel] = useState<string | null>(null)
   const [isTouch, setIsTouch] = useState(false)
+  const isInitializedRef = useRef(false)
 
   useEffect(() => {
-    if (!enabled || typeof window === 'undefined') return
+    if (!enabled || typeof window === 'undefined' || isInitializedRef.current) return
 
     const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
     if (isTouchDevice) {
@@ -27,6 +28,7 @@ export function CustomCursor({ enabled = true }: CursorProps) {
     }
 
     setIsVisible(true)
+    isInitializedRef.current = true
 
     const onMouseMove = (e: MouseEvent) => {
       setPosition({ x: e.clientX, y: e.clientY })
@@ -112,6 +114,7 @@ export function CustomCursor({ enabled = true }: CursorProps) {
       window.removeEventListener('mousemove', onMouseMove)
       window.removeEventListener('mouseover', checkHover)
       window.removeEventListener('mouseleave', handleMouseOut)
+      isInitializedRef.current = false
     }
   }, [enabled])
 

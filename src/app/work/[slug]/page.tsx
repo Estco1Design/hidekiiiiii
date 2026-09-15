@@ -29,7 +29,16 @@ export default function ProjectPage() {
   useEffect(() => {
     if (project) {
       const ctx = gsap.context(() => {
-        gsap.utils.toArray('.gallery-item').forEach((elem: any, i) => {
+        const galleryItems = gsap.utils.toArray<HTMLElement>('.gallery-item')
+        galleryItems.forEach((elem, i) => {
+          // Kill any existing ScrollTrigger on this element first
+          const existingTriggers = ScrollTrigger.getAll()
+          for (let j = existingTriggers.length - 1; j >= 0; j--) {
+            if (existingTriggers[j].trigger === elem) {
+              existingTriggers[j].kill()
+            }
+          }
+          
           gsap.fromTo(
             elem,
             { opacity: 0, y: 100 },
