@@ -61,3 +61,13 @@ Thumbs.db
 *.tar.bz2
 *.tar.xz
 *.tar.zst
+# Next.js
+/.next/
+/out/
+
+# TypeScript / Next generated
+*.tsbuildinfo
+next-env.d.ts
+
+# Vercel
+.vercel/
