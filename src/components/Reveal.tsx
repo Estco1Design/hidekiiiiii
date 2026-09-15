@@ -26,12 +26,14 @@ export function Reveal({
     const element = ref.current
     if (!element) return
 
-    // Kill any existing ScrollTrigger on this element
-    ScrollTrigger.getAll().forEach(trigger => {
+    // Kill any existing ScrollTrigger on this element to prevent duplicates
+    const scrollTriggers = ScrollTrigger.getAll()
+    for (let i = scrollTriggers.length - 1; i >= 0; i--) {
+      const trigger = scrollTriggers[i]
       if (trigger.trigger === element) {
         trigger.kill()
       }
-    })
+    }
 
     const getTransformValue = () => {
       switch (direction) {

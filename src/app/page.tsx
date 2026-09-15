@@ -9,6 +9,7 @@ import { HorizontalScroll } from '@/components/HorizontalScroll'
 import { ServicesSection } from '@/components/ServicesSection'
 import { CTASection } from '@/components/CTASection'
 import { Footer } from '@/components/Footer'
+import { Gallery3D } from '@/components/Gallery3D'
 import { projects } from '@/data/projects'
 
 if (typeof window !== 'undefined') {
@@ -64,7 +65,10 @@ export default function HomePage() {
       {/* Screen 03: Horizontal Project Sequence */}
       <HorizontalScroll projects={horizontalProjects} />
 
-      {/* Screen 04: Fullscreen Video Section (placeholder) */}
+      {/* Screen 04: 3D Gallery Experience */}
+      <Gallery3D />
+
+      {/* Screen 05: Fullscreen Video Section (placeholder) */}
       <section className="relative w-full h-screen overflow-hidden py-20 md:py-32">
         <div className="absolute inset-0 bg-bg-tertiary">
           <video
@@ -90,7 +94,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Screen 05: Asymmetric Composition */}
+      {/* Screen 06: Asymmetric Composition */}
       <section className="relative w-full py-20 md:py-32 px-6 md:px-12 overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           {/* Small photo top left */}
