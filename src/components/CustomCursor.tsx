@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { clsx } from 'clsx'
 import gsap from 'gsap'
 
@@ -11,11 +11,10 @@ interface CursorProps {
 export function CustomCursor({ enabled = true }: CursorProps) {
   const cursorRef = useRef<HTMLDivElement>(null)
   const labelRef = useRef<HTMLDivElement>(null)
-  const [position, setPosition] = useState({ x: -100, y: -100 })
-  const [isHovering, setIsHovering] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
-  const [hoverLabel, setHoverLabel] = useState<string | null>(null)
-  const [isTouch, setIsTouch] = useState(false)
+  const isHoveringRef = useRef(false)
+  const isVisibleRef = useRef(false)
+  const hoverLabelRef = useRef<string | null>(null)
+  const isTouchRef = useRef(false)
   const isInitializedRef = useRef(false)
 
   useEffect(() => {
@@ -23,24 +22,28 @@ export function CustomCursor({ enabled = true }: CursorProps) {
 
     const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
     if (isTouchDevice) {
-      setIsTouch(true)
+      isTouchRef.current = true
       return
     }
 
-    setIsVisible(true)
+    isVisibleRef.current = true
     isInitializedRef.current = true
 
+    // Initial show animation
+    if (cursorRef.current) {
+      gsap.set(cursorRef.current, { opacity: 1 })
+    }
+
     const onMouseMove = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY })
+      if (!cursorRef.current) return
       
-      if (cursorRef.current) {
-        gsap.to(cursorRef.current, {
-          x: e.clientX - 4,
-          y: e.clientY - 4,
-          duration: 0.15,
-          ease: 'power2.out',
-        })
-      }
+      // Direct GSAP update without React state
+      gsap.to(cursorRef.current, {
+        x: e.clientX - 4,
+        y: e.clientY - 4,
+        duration: 0.15,
+        ease: 'power2.out',
+      })
     }
 
     const checkHover = (e: MouseEvent) => {
@@ -54,7 +57,7 @@ export function CustomCursor({ enabled = true }: CursorProps) {
         target.dataset.hover === 'true'
 
       if (label) {
-        setHoverLabel(label)
+        hoverLabelRef.current = label
         if (labelRef.current) {
           gsap.to(labelRef.current, {
             opacity: 1,
@@ -64,7 +67,7 @@ export function CustomCursor({ enabled = true }: CursorProps) {
           })
         }
       } else if (isInteractive) {
-        setHoverLabel(null)
+        hoverLabelRef.current = null
         if (cursorRef.current) {
           gsap.to(cursorRef.current, {
             scale: 2.5,
@@ -73,7 +76,7 @@ export function CustomCursor({ enabled = true }: CursorProps) {
           })
         }
       } else {
-        setHoverLabel(null)
+        hoverLabelRef.current = null
         if (cursorRef.current) {
           gsap.to(cursorRef.current, {
             scale: 1,
@@ -83,11 +86,11 @@ export function CustomCursor({ enabled = true }: CursorProps) {
         }
       }
 
-      setIsHovering(!!(isInteractive || label))
+      isHoveringRef.current = !!(isInteractive || label)
     }
 
     const handleMouseOut = () => {
-      setHoverLabel(null)
+      hoverLabelRef.current = null
       if (labelRef.current) {
         gsap.to(labelRef.current, {
           opacity: 0,
@@ -103,12 +106,12 @@ export function CustomCursor({ enabled = true }: CursorProps) {
           ease: 'power2.out',
         })
       }
-      setIsHovering(false)
+      isHoveringRef.current = false
     }
 
-    window.addEventListener('mousemove', onMouseMove)
-    window.addEventListener('mouseover', checkHover)
-    window.addEventListener('mouseleave', handleMouseOut)
+    window.addEventListener('mousemove', onMouseMove, { passive: true })
+    window.addEventListener('mouseover', checkHover, { passive: true })
+    window.addEventListener('mouseleave', handleMouseOut, { passive: true })
 
     return () => {
       window.removeEventListener('mousemove', onMouseMove)
@@ -118,7 +121,7 @@ export function CustomCursor({ enabled = true }: CursorProps) {
     }
   }, [enabled])
 
-  if (!enabled || !isVisible || isTouch) return null
+  if (!enabled || isTouchRef.current) return null
 
   return (
     <>
@@ -128,6 +131,7 @@ export function CustomCursor({ enabled = true }: CursorProps) {
           'fixed top-0 left-0 w-2 h-2 bg-text-secondary rounded-full pointer-events-none z-[9999]',
           'mix-blend-difference'
         )}
+        style={{ opacity: 0 }}
       />
       <div
         ref={labelRef}
@@ -136,11 +140,8 @@ export function CustomCursor({ enabled = true }: CursorProps) {
           'text-xs-custom tracking-wider uppercase rounded-full pointer-events-none z-[9999]',
           'opacity-0 scale-0'
         )}
-        style={{ 
-          transform: `translate(${position.x}px, ${position.y}px) translate(-50%, -50%)`,
-        }}
       >
-        {hoverLabel}
+        {hoverLabelRef.current}
       </div>
     </>
   )

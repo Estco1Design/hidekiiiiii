@@ -175,7 +175,6 @@ export function Navigation({ theme = 'dark', hidden = false }: NavigationProps) 
       {mobileMenuOpen && (
         <div 
           className="fixed inset-0 z-40 bg-bg-primary md:hidden"
-          onClick={toggleMobileMenu}
         >
           <div className="flex flex-col items-center justify-center h-full gap-8 px-6">
             {navItems.map((item, index) => (

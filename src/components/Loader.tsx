@@ -1,29 +1,54 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import gsap from 'gsap'
 
 export function Loader() {
   const [isLoading, setIsLoading] = useState(true)
   const [progress, setProgress] = useState(0)
+  const intervalRef = useRef<number | null>(null)
+  const timeoutRef = useRef<number | null>(null)
+  const hasCompletedRef = useRef(false)
 
   useEffect(() => {
+    if (hasCompletedRef.current) return
+
     // Simulate loading progress - faster on mobile
     const isTouchDevice = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)
     const speedMultiplier = isTouchDevice ? 2 : 1
     
-    const interval = setInterval(() => {
+    intervalRef.current = window.setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval)
-          setTimeout(() => setIsLoading(false), isTouchDevice ? 200 : 500)
+        const newProgress = prev + Math.random() * 15 * speedMultiplier
+        if (newProgress >= 100) {
+          if (intervalRef.current) {
+            clearInterval(intervalRef.current)
+            intervalRef.current = null
+          }
+          
+          // Only set timeout once when reaching 100%
+          if (!timeoutRef.current && !hasCompletedRef.current) {
+            hasCompletedRef.current = true
+            timeoutRef.current = window.setTimeout(() => {
+              setIsLoading(false)
+            }, isTouchDevice ? 200 : 500)
+          }
           return 100
         }
-        return prev + Math.random() * 15 * speedMultiplier
+        return newProgress
       })
     }, 100)
 
-    return () => clearInterval(interval)
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+        intervalRef.current = null
+      }
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+        timeoutRef.current = null
+      }
+    }
   }, [])
 
   useEffect(() => {
