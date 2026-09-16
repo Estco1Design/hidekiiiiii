@@ -61,6 +61,7 @@ function GalleryPhoto({
 }) {
   const meshRef = useRef<THREE.Group>(null)
   const { viewport } = useThree()
+  const [imgError, setImgError] = useState(false)
   
   // Calculate parallax offset based on mouse position
   const parallaxX = mousePos.current.x * 0.3
@@ -89,14 +90,27 @@ function GalleryPhoto({
     meshRef.current.rotation.y = photo.rotation[1] + Math.sin(time * 0.5 + photo.position[0]) * 0.02
   })
   
+  if (imgError) {
+    // Fallback gray plane if image fails to load
+    return (
+      <group ref={meshRef} position={photo.position}>
+        <mesh>
+          <planeGeometry args={[viewport.width * 0.15 * photo.scale, viewport.height * 0.2 * photo.scale]} />
+          <meshBasicMaterial color="#333333" transparent opacity={0.85} side={THREE.DoubleSide} />
+        </mesh>
+      </group>
+    )
+  }
+  
   return (
     <group ref={meshRef} position={photo.position}>
       <Image
-        url={photo.src}
+        url={`${photo.src}?t=${Date.now()}`}
         transparent
         opacity={0.85}
         side={THREE.DoubleSide}
         scale={[photo.scale * viewport.width * 0.15, photo.scale * viewport.height * 0.2]}
+        onError={() => setImgError(true)}
       />
     </group>
   )
