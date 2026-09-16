@@ -1,54 +1,5 @@
-```
-# Dependencies
-node_modules/
-
-# Build artifacts
-dist/
-build/
-.next/
-out/
-
-# Environment variables
-.env
-.env.local
-*.env.*
-
-# Editors
-.vscode/
-.idea/
-
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-venv/
-.venv/
-.env
-
-# Logs
-*.log
-
-# OS generated files
-.DS_Store
-Thumbs.db
-
-# Coverage
-coverage/
-htmlcov/
-.coverage
-
-# Temporary files
-*.tmp
-*.temp
-*.swp
-*.swo
-
-# Cache directories
-.cache/
-.mypy_cache/
-.pytest_cache/
-.nyc_output/
-coverage/
-```
+(public/media/projects/concrete/img-01.jpg
+public/media/projects/echoes/img-01.jpg
+public/media/projects/echoes/img-02.jpg
+public/media/projects/shadow/img-01.jpg
+public/media/projects/void/img-01.jpg)
