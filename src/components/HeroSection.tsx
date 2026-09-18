@@ -1,5 +1,4 @@
 import { Reveal } from './Reveal'
-import { Media } from './Media'
 
 interface HeroSectionProps {
   video?: string
@@ -9,8 +8,8 @@ interface HeroSectionProps {
 }
 
 export function HeroSection({
-  video = '/media/home/hero-video.mp4',
-  image = '/media/home/hero-poster.jpg',
+  video = '/media/hero/hero.mp4',
+  image = '/media/hero/hero-poster.jpg',
   title = 'HIDEKI',
   subtitle = 'CREATIVE STUDIO / MOSCOW / WORLDWIDE',
 }: HeroSectionProps) {
@@ -28,8 +27,18 @@ export function HeroSection({
           poster={image}
         >
           <source src={video} type="video/mp4" />
+          {/* Fallback to poster image if video fails or is not available */}
           <img src={image} alt={title} className="w-full h-full object-cover" />
         </video>
+        {/* Fallback background if video file doesn't exist */}
+        <div 
+          className="absolute inset-0 bg-bg-primary"
+          style={{
+            backgroundImage: `url(${image})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
       </div>
 
       {/* Overlay Gradient */}
