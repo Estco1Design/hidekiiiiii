@@ -1,6 +1,4 @@
-```
-# Dependencies
-node_modules/
+(public/media/hero/README.md is just a documentation file in public media, no build artifacts, dependencies, or temp files detected)
 
 # Build outputs
 .next/
