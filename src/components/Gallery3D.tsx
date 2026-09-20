@@ -212,7 +212,7 @@ export function Gallery3D({ className }: Gallery3DProps) {
       className={clsx('relative w-full h-[60vh] md:h-screen overflow-hidden', className)}
       onMouseMove={handleMouseMove}
       onTouchMove={handleTouchMove}
-      style={{ pointerEvents: 'auto' }}
+      style={{ pointerEvents: 'none' }}
     >
       {!isLoading && (
         <div className="absolute inset-0 bg-gradient-to-b from-bg-primary/20 via-transparent to-bg-primary pointer-events-none z-10" />
@@ -227,7 +227,7 @@ export function Gallery3D({ className }: Gallery3DProps) {
         }}
         onCreated={() => setIsLoading(false)}
         camera={{ position: [0, 0.5, 2], fov: 45 }}
-        style={{ pointerEvents: 'none' }}
+        style={{ pointerEvents: 'auto' }}
       >
         <GalleryScene mousePos={mousePos} />
       </Canvas>

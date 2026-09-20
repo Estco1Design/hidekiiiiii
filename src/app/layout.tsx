@@ -41,7 +41,6 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <I18nProvider>
-          <Loader />
           <CommandPaletteProvider>
             <SmoothScroll>
               <CustomCursor enabled={true} />

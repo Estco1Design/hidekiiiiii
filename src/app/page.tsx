@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { useEffect } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -10,6 +11,7 @@ import { ServicesSection } from '@/components/ServicesSection'
 import { CTASection } from '@/components/CTASection'
 import { Footer } from '@/components/Footer'
 import { Gallery3D } from '@/components/Gallery3D'
+import { Loader } from '@/components/Loader'
 import { projects } from '@/data/projects'
 
 if (typeof window !== 'undefined') {
@@ -17,6 +19,8 @@ if (typeof window !== 'undefined') {
 }
 
 export default function HomePage() {
+  const [showLoader, setShowLoader] = useState(true)
+
   useEffect(() => {
     // Add any page-specific animations here
     const ctx = gsap.context(() => {
@@ -45,6 +49,10 @@ export default function HomePage() {
     year: p.year,
     image: p.coverImage || '/media/placeholder.jpg',
   }))
+
+  if (showLoader) {
+    return <Loader onComplete={() => setShowLoader(false)} />
+  }
 
   return (
     <div className="relative">

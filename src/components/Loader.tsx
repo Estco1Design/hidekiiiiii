@@ -3,13 +3,21 @@
 import { useEffect, useState, useRef } from 'react'
 import gsap from 'gsap'
 
-export function Loader() {
+interface LoaderProps {
+  onComplete?: () => void
+}
+
+export function Loader({ onComplete }: LoaderProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [progress, setProgress] = useState(0)
   const intervalRef = useRef<number | null>(null)
   const timeoutRef = useRef<number | null>(null)
   const hasCompletedRef = useRef(false)
-
+  const containerRef = useRef<HTMLDivElement>(null)
+  const textRef = useRef<HTMLDivElement>(null)
+  const lineRef = useRef<HTMLDivElement>(null)
+  const progressLineRef = useRef<HTMLDivElement>(null)
+  
   useEffect(() => {
     if (hasCompletedRef.current) return
 
@@ -31,6 +39,7 @@ export function Loader() {
             hasCompletedRef.current = true
             timeoutRef.current = window.setTimeout(() => {
               setIsLoading(false)
+              onComplete?.()
             }, isTouchDevice ? 200 : 500)
           }
           return 100
@@ -49,37 +58,55 @@ export function Loader() {
         timeoutRef.current = null
       }
     }
-  }, [])
+  }, [onComplete])
 
   useEffect(() => {
-    if (!isLoading) {
-      gsap.to('.loader-container', {
+    if (!isLoading && containerRef.current) {
+      const tl = gsap.timeline({
+        onComplete: () => {
+          containerRef.current?.remove()
+        },
+      })
+      
+      tl.to(progressLineRef.current, {
+        width: '100%',
+        duration: 0.6,
+        ease: 'power2.inOut',
+      })
+      .to([textRef.current, lineRef.current], {
         opacity: 0,
         duration: 0.8,
         ease: 'power2.inOut',
-        onComplete: () => {
-          document.querySelector('.loader-container')?.remove()
-        },
-      })
+      }, '-=0.3')
+      .to(containerRef.current, {
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power2.inOut',
+      }, '-=0.6')
     }
   }, [isLoading])
 
   return (
-    <div className="loader-container fixed inset-0 z-[10000] bg-bg-primary flex items-center justify-center">
-      <div className="relative">
-        <div className="text-text-secondary text-editorial font-light tracking-tighter">
+    <div 
+      ref={containerRef}
+      className="loader-container fixed inset-0 z-[10000] bg-bg-primary flex items-center justify-center"
+    >
+      <div className="relative flex flex-col items-center">
+        <div 
+          ref={textRef}
+          className="text-text-secondary text-editorial font-light tracking-[0.3em]"
+        >
           HIDEKI
         </div>
-        <div className="mt-4 flex items-center gap-3">
-          <div className="w-24 h-[1px] bg-white/20 overflow-hidden">
-            <div
-              className="h-full bg-white transition-all duration-200"
-              style={{ width: `${Math.min(progress, 100)}%` }}
-            />
-          </div>
-          <span className="text-mono text-text-primary/60">
-            {Math.min(Math.round(progress), 100).toString().padStart(3, '0')}
-          </span>
+        <div 
+          ref={lineRef}
+          className="mt-6 w-48 h-[1px] bg-white/20 overflow-hidden"
+        >
+          <div
+            ref={progressLineRef}
+            className="h-full bg-white"
+            style={{ width: `${Math.min(progress, 100)}%` }}
+          />
         </div>
       </div>
     </div>
