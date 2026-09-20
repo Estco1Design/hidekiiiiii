@@ -1,6 +1,7 @@
 'use client'
 
 import { Reveal } from '@/components/Reveal'
+import { SmartMedia } from '@/components/SmartMedia'
 import { Footer } from '@/components/Footer'
 import { useI18n } from '@/i18n/I18nProvider'
 
@@ -37,10 +38,11 @@ export default function AboutPage() {
           <Reveal direction="up" delay={0.2}>
             <div className="group">
               <div className="aspect-[3/4] overflow-hidden bg-bg-tertiary mb-8">
-                <img
+                <SmartMedia
                   src="/media/about/founder-fashion.jpg"
                   alt={t('about.fashionDirector')}
-                  className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+                  aspectRatio="3/4"
+                  hideOnLoad={true}
                 />
               </div>
               <h3 className="text-2xl text-text-secondary font-light tracking-tight mb-4">
@@ -62,10 +64,11 @@ export default function AboutPage() {
           <Reveal direction="up" delay={0.4}>
             <div className="group">
               <div className="aspect-[3/4] overflow-hidden bg-bg-tertiary mb-8">
-                <img
+                <SmartMedia
                   src="/media/about/founder-visual.jpg"
                   alt={t('about.visualDirector')}
-                  className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+                  aspectRatio="3/4"
+                  hideOnLoad={true}
                 />
               </div>
               <h3 className="text-2xl text-text-secondary font-light tracking-tight mb-4">
