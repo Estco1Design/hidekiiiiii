@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Reveal } from '@/components/Reveal'
+import { SmartMedia } from '@/components/SmartMedia'
 import { Footer } from '@/components/Footer'
 import { useI18n } from '@/i18n/I18nProvider'
 
@@ -15,11 +16,20 @@ export default function ContactPage() {
     date: '',
     message: '',
   })
+  const formRef = useRef<HTMLFormElement>(null)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     console.log('Form submitted:', formData)
     alert(t('contact.thankYou'))
+    setFormData({
+      name: '',
+      contact: '',
+      projectType: '',
+      budget: '',
+      date: '',
+      message: '',
+    })
   }
 
   return (
@@ -39,9 +49,9 @@ export default function ContactPage() {
         </Reveal>
       </section>
 
-      {/* Contact Form */}
-      <section className="max-w-3xl mb-20">
-        <form onSubmit={handleSubmit} className="space-y-8">
+      {/* Contact Form - Premium Creative Brief */}
+      <section className="max-w-4xl mb-20">
+        <form ref={formRef} onSubmit={handleSubmit} className="space-y-10">
           <Reveal direction="up" delay={0.2}>
             <div>
               <label className="block text-mono text-text-primary/40 text-xs-custom uppercase tracking-[0.15em] mb-3">
@@ -52,7 +62,7 @@ export default function ContactPage() {
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full bg-transparent border-b border-white/20 py-4 text-text-secondary focus:border-text-secondary focus:outline-none transition-colors"
+                className="w-full bg-transparent border-b border-white/20 py-4 text-text-secondary focus:border-text-secondary focus:outline-none transition-colors placeholder:text-text-primary/20"
                 placeholder=""
               />
             </div>
@@ -68,57 +78,57 @@ export default function ContactPage() {
                 required
                 value={formData.contact}
                 onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
-                className="w-full bg-transparent border-b border-white/20 py-4 text-text-secondary focus:border-text-secondary focus:outline-none transition-colors"
-                placeholder=""
+                className="w-full bg-transparent border-b border-white/20 py-4 text-text-secondary focus:border-text-secondary focus:outline-none transition-colors placeholder:text-text-primary/20"
+                placeholder="email@example.com / @telegram"
               />
             </div>
           </Reveal>
 
           <Reveal direction="up" delay={0.4}>
-            <div>
-              <label className="block text-mono text-text-primary/40 text-xs-custom uppercase tracking-[0.15em] mb-3">
-                {t('contact.projectTypeLabel')}
-              </label>
-              <select
-                value={formData.projectType}
-                onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
-                className="w-full bg-transparent border-b border-white/20 py-4 text-text-secondary focus:border-text-secondary focus:outline-none transition-colors appearance-none cursor-pointer"
-              >
-                <option value="" className="bg-bg-primary">{t('contact.selectPlaceholder')}</option>
-                <option value="fashion-photography" className="bg-bg-primary">{t('contact.fashionPhotography')}</option>
-                <option value="portrait" className="bg-bg-primary">{t('contact.portrait')}</option>
-                <option value="campaign" className="bg-bg-primary">{t('contact.campaign')}</option>
-                <option value="commercial" className="bg-bg-primary">{t('contact.commercial')}</option>
-                <option value="video" className="bg-bg-primary">{t('contact.video')}</option>
-                <option value="music-video" className="bg-bg-primary">{t('contact.musicVideo')}</option>
-                <option value="art-direction" className="bg-bg-primary">{t('contact.artDirection')}</option>
-                <option value="ai-photography" className="bg-bg-primary">{t('contact.aiPhotography')}</option>
-                <option value="product" className="bg-bg-primary">{t('contact.product')}</option>
-                <option value="full-production" className="bg-bg-primary">{t('contact.fullProduction')}</option>
-              </select>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <label className="block text-mono text-text-primary/40 text-xs-custom uppercase tracking-[0.15em] mb-3">
+                  {t('contact.projectTypeLabel')}
+                </label>
+                <select
+                  value={formData.projectType}
+                  onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
+                  className="w-full bg-transparent border-b border-white/20 py-4 text-text-secondary focus:border-text-secondary focus:outline-none transition-colors appearance-none cursor-pointer"
+                >
+                  <option value="" className="bg-bg-primary">{t('contact.selectPlaceholder')}</option>
+                  <option value="fashion-photography" className="bg-bg-primary">{t('contact.fashionPhotography')}</option>
+                  <option value="portrait" className="bg-bg-primary">{t('contact.portrait')}</option>
+                  <option value="campaign" className="bg-bg-primary">{t('contact.campaign')}</option>
+                  <option value="commercial" className="bg-bg-primary">{t('contact.commercial')}</option>
+                  <option value="video" className="bg-bg-primary">{t('contact.video')}</option>
+                  <option value="music-video" className="bg-bg-primary">{t('contact.musicVideo')}</option>
+                  <option value="art-direction" className="bg-bg-primary">{t('contact.artDirection')}</option>
+                  <option value="ai-photography" className="bg-bg-primary">{t('contact.aiPhotography')}</option>
+                  <option value="product" className="bg-bg-primary">{t('contact.product')}</option>
+                  <option value="full-production" className="bg-bg-primary">{t('contact.fullProduction')}</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-mono text-text-primary/40 text-xs-custom uppercase tracking-[0.15em] mb-3">
+                  {t('contact.budgetLabel')}
+                </label>
+                <select
+                  value={formData.budget}
+                  onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                  className="w-full bg-transparent border-b border-white/20 py-4 text-text-secondary focus:border-text-secondary focus:outline-none transition-colors appearance-none cursor-pointer"
+                >
+                  <option value="" className="bg-bg-primary">{t('contact.selectPlaceholder')}</option>
+                  <option value="<50K" className="bg-bg-primary">&lt; 50K ₽</option>
+                  <option value="50-100K" className="bg-bg-primary">50K – 100K ₽</option>
+                  <option value="100-250K" className="bg-bg-primary">100K – 250K ₽</option>
+                  <option value="250K+" className="bg-bg-primary">250K+ ₽</option>
+                </select>
+              </div>
             </div>
           </Reveal>
 
           <Reveal direction="up" delay={0.5}>
-            <div>
-              <label className="block text-mono text-text-primary/40 text-xs-custom uppercase tracking-[0.15em] mb-3">
-                {t('contact.budgetLabel')}
-              </label>
-              <select
-                value={formData.budget}
-                onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                className="w-full bg-transparent border-b border-white/20 py-4 text-text-secondary focus:border-text-secondary focus:outline-none transition-colors appearance-none cursor-pointer"
-              >
-                <option value="" className="bg-bg-primary">{t('contact.selectPlaceholder')}</option>
-                <option value="<50K" className="bg-bg-primary">&lt; 50K ₽</option>
-                <option value="50-100K" className="bg-bg-primary">50K – 100K ₽</option>
-                <option value="100-250K" className="bg-bg-primary">100K – 250K ₽</option>
-                <option value="250K+" className="bg-bg-primary">250K+ ₽</option>
-              </select>
-            </div>
-          </Reveal>
-
-          <Reveal direction="up" delay={0.6}>
             <div>
               <label className="block text-mono text-text-primary/40 text-xs-custom uppercase tracking-[0.15em] mb-3">
                 {t('contact.dateLabel')}
@@ -127,13 +137,13 @@ export default function ContactPage() {
                 type="text"
                 value={formData.date}
                 onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                className="w-full bg-transparent border-b border-white/20 py-4 text-text-secondary focus:border-text-secondary focus:outline-none transition-colors"
+                className="w-full bg-transparent border-b border-white/20 py-4 text-text-secondary focus:border-text-secondary focus:outline-none transition-colors placeholder:text-text-primary/20"
                 placeholder={t('contact.datePlaceholder')}
               />
             </div>
           </Reveal>
 
-          <Reveal direction="up" delay={0.7}>
+          <Reveal direction="up" delay={0.6}>
             <div>
               <label className="block text-mono text-text-primary/40 text-xs-custom uppercase tracking-[0.15em] mb-3">
                 {t('contact.messageLabel')}
@@ -142,13 +152,13 @@ export default function ContactPage() {
                 rows={4}
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                className="w-full bg-transparent border-b border-white/20 py-4 text-text-secondary focus:border-text-secondary focus:outline-none transition-colors resize-none"
+                className="w-full bg-transparent border-b border-white/20 py-4 text-text-secondary focus:border-text-secondary focus:outline-none transition-colors resize-none placeholder:text-text-primary/20"
                 placeholder={t('contact.messagePlaceholder')}
               />
             </div>
           </Reveal>
 
-          <Reveal direction="up" delay={0.8}>
+          <Reveal direction="up" delay={0.7}>
             <button
               type="submit"
               className="mt-8 px-12 py-4 bg-text-secondary text-bg-primary text-mono uppercase tracking-[0.2em] hover:bg-text-primary/80 transition-colors"
@@ -162,7 +172,10 @@ export default function ContactPage() {
 
       {/* Direct Contact */}
       <section className="border-t border-white/10 pt-16">
-        <Reveal direction="up" delay={0.9}>
+        <Reveal direction="up" delay={0.8}>
+          <p className="text-mono text-text-primary/40 uppercase tracking-[0.15em] mb-8">
+            DIRECT CONTACT
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <a
               href="https://instagram.com/hideki"

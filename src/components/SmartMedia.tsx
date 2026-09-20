@@ -17,6 +17,7 @@ interface SmartMediaProps {
   onLoad?: () => void
   onVisible?: () => void
   aspectRatio?: string
+  hideOnLoad?: boolean
 }
 
 export function SmartMedia({
@@ -33,10 +34,12 @@ export function SmartMedia({
   onLoad,
   onVisible,
   aspectRatio,
+  hideOnLoad = false,
 }: SmartMediaProps) {
   const ref = useRef<HTMLVideoElement | HTMLImageElement>(null)
   const [isVisible, setIsVisible] = useState(priority)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [hasError, setHasError] = useState(false)
 
   useEffect(() => {
     if (priority) return
@@ -67,16 +70,27 @@ export function SmartMedia({
     onLoad?.()
   }
 
+  const handleError = () => {
+    setHasError(true)
+    setIsLoaded(true)
+  }
+
+  // Don't render anything if hideOnLoad and not loaded yet
+  if (hideOnLoad && !isLoaded && !hasError) {
+    return null
+  }
+
   const containerClasses = clsx(
     'w-full h-full overflow-hidden',
-    !isLoaded && 'bg-bg-tertiary',
+    !isLoaded && !hasError && 'bg-bg-tertiary',
+    hasError && 'bg-bg-tertiary flex items-center justify-center',
     className
   )
 
   if (type === 'video') {
     return (
       <div className={containerClasses} style={{ aspectRatio }}>
-        {isVisible ? (
+        {isVisible && !hasError ? (
           <video
             ref={ref as React.RefObject<HTMLVideoElement>}
             className="w-full h-full object-cover"
@@ -87,9 +101,12 @@ export function SmartMedia({
             preload={priority ? 'auto' : 'metadata'}
             poster={poster}
             onLoadedData={handleLoad}
+            onError={handleError}
           >
             <source src={src} type="video/mp4" />
           </video>
+        ) : hasError ? (
+          <div className="w-full h-full bg-bg-tertiary" />
         ) : (
           <div className="w-full h-full bg-bg-tertiary" />
         )}
@@ -99,15 +116,20 @@ export function SmartMedia({
 
   return (
     <div className={containerClasses} style={{ aspectRatio }}>
-      <img
-        ref={ref as React.RefObject<HTMLImageElement>}
-        src={src}
-        alt={alt}
-        className="w-full h-full object-cover"
-        loading={priority ? 'eager' : 'lazy'}
-        decoding="async"
-        onLoad={handleLoad}
-      />
+      {!hasError ? (
+        <img
+          ref={ref as React.RefObject<HTMLImageElement>}
+          src={src}
+          alt={alt}
+          className="w-full h-full object-cover"
+          loading={priority ? 'eager' : 'lazy'}
+          decoding="async"
+          onLoad={handleLoad}
+          onError={handleError}
+        />
+      ) : (
+        <div className="w-full h-full bg-bg-tertiary" />
+      )}
     </div>
   )
 }

@@ -1,17 +1,18 @@
 'use client'
 
-import { useState } from 'react'
-import Link from 'next/link'
 import { Reveal } from '@/components/Reveal'
+import { SmartMedia } from '@/components/SmartMedia'
 import { Footer } from '@/components/Footer'
 import { getAvailableProducts, getArchiveProducts } from '@/data/products'
 import { useI18n } from '@/i18n/I18nProvider'
 
 export default function ShopPage() {
   const { t } = useI18n()
-  const [activeTab, setActiveTab] = useState<'drop' | 'archive'>('drop')
   const availableProducts = getAvailableProducts()
   const archiveProducts = getArchiveProducts()
+
+  // Focus on OBJECT 001 as the main drop
+  const object001 = availableProducts.find(p => p.slug === 'object-001')
 
   return (
     <div className="relative min-h-screen pt-32 pb-20 px-6 md:px-12">
@@ -24,123 +25,137 @@ export default function ShopPage() {
         </Reveal>
 
         <Reveal direction="up" delay={0.2}>
-          <div className="flex items-center gap-6">
-            <button
-              onClick={() => setActiveTab('drop')}
-              className={`text-mono uppercase tracking-[0.15em] transition-colors ${
-                activeTab === 'drop'
-                  ? 'text-text-secondary'
-                  : 'text-text-primary/50 hover:text-text-primary/80'
-              }`}
-              data-hover="true"
-            >
-              {t('shop.drop')}
-            </button>
-            <span className="text-text-primary/30">/</span>
-            <button
-              onClick={() => setActiveTab('archive')}
-              className={`text-mono uppercase tracking-[0.15em] transition-colors ${
-                activeTab === 'archive'
-                  ? 'text-text-secondary'
-                  : 'text-text-primary/50 hover:text-text-primary/80'
-              }`}
-              data-hover="true"
-            >
-              {t('shop.archive')}
-            </button>
-          </div>
+          <p className="text-mono text-text-primary/60 uppercase tracking-[0.15em] max-w-2xl">
+            HIDEKI / OBJECT 001 — FIRST DROP
+          </p>
         </Reveal>
       </section>
 
-      {/* Campaign Image */}
-      <Reveal direction="scale" delay={0.3}>
-        <div className="aspect-[21/9] overflow-hidden bg-bg-tertiary mb-16">
-          <img
-            src="/media/shop/campaign.jpg"
-            alt="HIDEKI Shop Campaign"
-            className="w-full h-full object-cover opacity-60"
-          />
-        </div>
-      </Reveal>
+      {/* Main Campaign Media - OBJECT 001 */}
+      {object001 && (
+        <section className="mb-20 md:mb-32">
+          <Reveal direction="scale">
+            <div className="aspect-[21/9] overflow-hidden bg-bg-tertiary mb-8">
+              <SmartMedia
+                src={object001.images[0]}
+                alt={object001.title}
+                aspectRatio="21/9"
+                priority={true}
+              />
+            </div>
+          </Reveal>
 
-      {/* Products Grid */}
-      {activeTab === 'drop' ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-          {availableProducts.map((product, index) => (
-            <Reveal key={product.id} direction="up" delay={index * 0.1}>
-              <Link
-                href={`/shop/${product.slug}`}
-                className="group block"
-                data-hover="true"
-              >
-                <div className="aspect-[3/4] overflow-hidden bg-bg-tertiary mb-4">
-                  <img
-                    src={product.images[0]}
-                    alt={product.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-mono text-text-primary/40 text-xs-custom mb-1">
-                      {t('shop.objectPrefix')} {product.objectNumber}
-                    </p>
-                    <h3 className="text-lg text-text-secondary font-light tracking-tight">
-                      {product.title}
-                    </h3>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-mono text-text-primary/60">
-                      {product.price.toLocaleString()} ₽
-                    </p>
-                    {product.status === 'pre-order' && (
-                      <p className="text-mono text-text-primary/40 text-xs-custom">
-                        {t('shop.preOrder')}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </Link>
-            </Reveal>
-          ))}
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {archiveProducts.map((product, index) => (
-            <Reveal key={product.id} direction="up" delay={index * 0.1}>
-              <Link
-                href={`/shop/${product.slug}`}
-                className="block group py-6 border-b border-white/10 hover:border-white/30 transition-colors"
-                data-hover="true"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-6">
-                    <span className="text-mono text-text-primary/40">
-                      {product.objectNumber}
+          <Reveal direction="up" delay={0.2}>
+            <div className="flex items-end justify-between flex-wrap gap-6">
+              <div>
+                <p className="text-mono text-text-primary/40 text-xs-custom mb-2">
+                  {t('shop.objectPrefix')} {object001.objectNumber}
+                </p>
+                <h2 className="text-3xl md:text-4xl text-text-secondary font-light tracking-tight">
+                  {object001.title}
+                </h2>
+              </div>
+              <div className="text-right">
+                <p className="text-2xl md:text-3xl text-text-secondary font-light tracking-tight">
+                  {object001.price.toLocaleString()} ₽
+                </p>
+                {object001.status === 'pre-order' && (
+                  <p className="text-mono text-text-primary/40 text-xs-custom mt-1">
+                    {t('shop.preOrder')}
+                  </p>
+                )}
+                {object001.status === 'available' && (
+                  <p className="text-mono text-text-primary/40 text-xs-custom mt-1">
+                    AVAILABLE
+                  </p>
+                )}
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal direction="up" delay={0.3}>
+            <div className="mt-8 max-w-2xl">
+              <p className="text-mono text-text-primary/50 text-sm leading-relaxed">
+                {object001.description}
+              </p>
+            </div>
+          </Reveal>
+
+          <Reveal direction="up" delay={0.4}>
+            <div className="mt-8">
+              <p className="text-mono text-text-primary/40 uppercase tracking-[0.15em] mb-4">
+                SIZES
+              </p>
+              <div className="flex gap-4">
+                {object001.sizes.map((size) => (
+                  <div key={size.label} className="group cursor-pointer">
+                    <span className="text-mono text-text-primary/60 hover:text-text-secondary transition-colors border border-white/20 px-4 py-2 text-xs-custom">
+                      {size.label}
                     </span>
-                    <h3 className="text-xl text-text-secondary font-light tracking-tight group-hover:text-text-primary/80 transition-colors">
-                      {product.title}
-                    </h3>
                   </div>
-                  <div className="flex items-center gap-8 text-mono text-text-primary/40">
-                    <span>{t('shop.archiveLabel')}</span>
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1"
-                      className="transform group-hover:translate-x-2 transition-transform opacity-0 group-hover:opacity-100"
-                    >
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal direction="up" delay={0.5}>
+            <a
+              href={`/shop/${object001.slug}`}
+              className="inline-block mt-12 px-12 py-4 bg-text-secondary text-bg-primary text-mono uppercase tracking-[0.2em] hover:bg-text-primary/80 transition-colors"
+              data-hover="true"
+            >
+              VIEW OBJECT
+            </a>
+          </Reveal>
+        </section>
+      )}
+
+      {/* Archive Section */}
+      {archiveProducts.length > 0 && (
+        <section className="border-t border-white/10 pt-20">
+          <Reveal direction="up">
+            <p className="text-mono text-text-primary/40 uppercase tracking-[0.15em] mb-8">
+              ARCHIVE
+            </p>
+          </Reveal>
+
+          <div className="space-y-4">
+            {archiveProducts.map((product, index) => (
+              <Reveal key={product.id} direction="up" delay={index * 0.1}>
+                <a
+                  href={`/shop/${product.slug}`}
+                  className="block group py-6 border-b border-white/10 hover:border-white/30 transition-colors"
+                  data-hover="true"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-6">
+                      <span className="text-mono text-text-primary/40">
+                        {product.objectNumber}
+                      </span>
+                      <h3 className="text-xl text-text-secondary font-light tracking-tight group-hover:text-text-primary/80 transition-colors">
+                        {product.title}
+                      </h3>
+                    </div>
+                    <div className="flex items-center gap-8 text-mono text-text-primary/40">
+                      <span>{t('shop.archiveLabel')}</span>
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1"
+                        className="transform group-hover:translate-x-2 transition-transform opacity-0 group-hover:opacity-100"
+                      >
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            </Reveal>
-          ))}
-        </div>
+                </a>
+              </Reveal>
+            ))}
+          </div>
+        </section>
       )}
 
       <Footer showShopPreview={false} />
